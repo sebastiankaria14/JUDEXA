@@ -1,3 +1,4 @@
+
 -- Juryline Database Schema
 -- Migration 001: Initial Schema
 -- Creates all core tables for the Juryline hackathon judging platform

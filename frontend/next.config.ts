@@ -1,16 +1,18 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  output: "standalone", // For Docker production builds
+  output: "standalone",
   experimental: {
     optimizePackageImports: ["@chakra-ui/react", "framer-motion"],
+    turbo: {
+      resolveAlias: {
+        canvas: "./empty-module.ts",
+      },
+    },
   },
-  // Performance optimizations
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
-  // Image optimization
   images: {
     remotePatterns: [
       {
@@ -18,6 +20,13 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
+  },
+  // Faster builds
+  typescript: {
+    ignoreBuildErrors: false,
+  },
+  eslint: {
+    ignoreDuringBuilds: false,
   },
 };
 
