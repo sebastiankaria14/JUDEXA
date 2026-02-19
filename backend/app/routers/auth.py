@@ -17,6 +17,12 @@ async def signup(request: SignUpRequest):
     Register a new user via Supabase Auth.
     Sends a verification email. Profile is auto-created by DB trigger.
     """
+    if supabase is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Database not configured. Please set up Supabase credentials in backend/.env"
+        )
+    
     try:
         result = supabase.auth.sign_up({
             "email": request.email,
@@ -51,6 +57,12 @@ async def login(request: SignInRequest):
     Login with email + password. Supabase rejects unverified emails.
     Returns session tokens.
     """
+    if supabase is None:
+        raise HTTPException(
+            status_code=503,
+            detail="Database not configured. Please set up Supabase credentials in backend/.env"
+        )
+    
     try:
         result = supabase.auth.sign_in_with_password({
             "email": request.email,

@@ -95,6 +95,49 @@ async def api_health_check():
     }
 
 
+@app.get("/api/v1/setup-status")
+async def setup_status():
+    """Check which services are configured and ready to use."""
+    from app.supabase_client import supabase
+    from app.r2_client import get_r2_client
+    
+    settings = get_settings()
+    
+    supabase_configured = supabase is not None
+    r2_configured = get_r2_client() is not None
+    archestra_configured = bool(settings.archestra_api_key and settings.archestra_base_url)
+    
+    return {
+        "status": "ready" if supabase_configured else "configuration_required",
+        "services": {
+            "supabase": {
+                "configured": supabase_configured,
+                "required": True,
+                "features": ["Authentication", "Database", "User Management"],
+                "setup_url": "https://supabase.com/dashboard",
+            },
+            "cloudflare_r2": {
+                "configured": r2_configured,
+                "required": False,
+                "features": ["File Uploads", "Image Storage"],
+                "setup_url": "https://dash.cloudflare.com/",
+            },
+            "archestra": {
+                "configured": archestra_configured,
+                "required": False,
+                "features": ["AI Judge Assignment", "Automated Feedback"],
+                "setup_url": "Contact Archestra for API access",
+            },
+        },
+        "next_steps": [
+            "1. Create a Supabase project at https://supabase.com" if not supabase_configured else "✓ Supabase configured",
+            "2. Run database migrations in Supabase SQL Editor" if supabase_configured else "2. Get Supabase credentials and update backend/.env",
+            "3. (Optional) Set up Cloudflare R2 for file uploads" if not r2_configured else "✓ R2 configured",
+            "4. (Optional) Configure Archestra AI for automated judging" if not archestra_configured else "✓ Archestra configured",
+        ],
+    }
+
+
 # -- Routers --
 from app.routers import auth, profile, events, form_fields, criteria, judges, uploads, submissions, reviews, archestra, dashboard
 
