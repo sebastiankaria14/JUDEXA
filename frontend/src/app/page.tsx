@@ -53,9 +53,9 @@ function RevealSection({ children, delay = 0 }: { children: React.ReactNode; del
   return (
     <MotionBox
       ref={ref}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.3, delay, ease: "easeOut" }}
+      transition={{ duration: 0.2, delay: 0, ease: "easeOut" }}
     >
       {children}
     </MotionBox>
@@ -411,7 +411,7 @@ export default function Home() {
             maxW={{ lg: "540px" }}
             initial={{ opacity: 0, x: -30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
+            transition={{ duration: 0.15, ease: "easeOut" }}
           >
             <VStack spacing={6} align={{ base: "center", lg: "flex-start" }} textAlign={{ base: "center", lg: "left" }}>
               <Badge
@@ -517,7 +517,7 @@ export default function Home() {
             justifyContent="center"
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.7, delay: 0.3, ease: "easeOut" }}
+            transition={{ duration: 0.2, delay: 0.1, ease: "easeOut" }}
           >
             <RotatingFlowCard />
           </MotionBox>

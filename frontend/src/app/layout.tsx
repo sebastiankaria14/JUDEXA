@@ -14,14 +14,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning style={{ backgroundColor: '#1a1a1a' }}>
       <head>
         <link
           href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
       </head>
-      <body suppressHydrationWarning>
+      <body suppressHydrationWarning style={{ margin: 0, padding: 0, backgroundColor: '#1a1a1a' }}>
         <Providers>{children}</Providers>
       </body>
     </html>
