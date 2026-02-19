@@ -4,11 +4,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   experimental: {
     optimizePackageImports: ["@chakra-ui/react", "framer-motion"],
-    turbo: {
-      resolveAlias: {
-        canvas: "./empty-module.ts",
-      },
-    },
+    optimizeCss: true,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
@@ -21,7 +17,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-  // Faster builds
+  reactStrictMode: true,
   typescript: {
     ignoreBuildErrors: false,
   },

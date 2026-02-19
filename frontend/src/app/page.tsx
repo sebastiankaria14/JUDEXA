@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
+import Link from "next/link";
 import {
   Box,
   Container,
@@ -52,9 +53,9 @@ function RevealSection({ children, delay = 0 }: { children: React.ReactNode; del
   return (
     <MotionBox
       ref={ref}
-      initial={{ opacity: 0, y: 40 }}
+      initial={{ opacity: 0, y: 20 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.7, delay, ease: "easeOut" }}
+      transition={{ duration: 0.3, delay, ease: "easeOut" }}
     >
       {children}
     </MotionBox>
@@ -179,7 +180,7 @@ function RotatingFlowCard() {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % FLOW_STEPS.length);
-    }, 3500);
+    }, 2500);
     return () => clearInterval(interval);
   }, []);
 
@@ -475,49 +476,33 @@ export default function Home() {
                   </Button>
                 ) : (
                   <>
-                    <Button
-                      size="lg"
-                      colorScheme="brand"
-                      color="white"
-                      px={8}
-                      fontSize="lg"
-                      rightIcon={<HiOutlineArrowRight />}
-                      onClick={() => router.push("/register")}
-                      _hover={{
-                        transform: "translateY(-2px)",
-                        boxShadow: "0 10px 40px rgba(124, 58, 237, 0.4)",
-                      }}
-                      sx={{
-                        position: "relative",
-                        overflow: "hidden",
-                        _after: {
-                          content: '""',
-                          position: "absolute",
-                          top: 0,
-                          left: "-100%",
-                          w: "200%",
-                          h: "100%",
-                          bg: "linear-gradient(90deg, transparent, rgba(255,b255,255,0.15), transparent)",
-                          animation: "shimmer 3s infinite",
-                        },
-                        "@keyframes shimmer": {
-                          "0%": { left: "-100%" },
-                          "100%": { left: "100%" },
-                        },
-                      }}
-                    >
-                      Create Your Event
-                    </Button>
-                    <Button
-                      size="lg"
-                      variant="glass"
-                      px={8}
-                      fontSize="lg"
-                      color="whiteAlpha.800"
-                      onClick={() => router.push("/login")}
-                    >
-                      Sign In
-                    </Button>
+                    <Link href="/register" prefetch={true}>
+                      <Button
+                        size="lg"
+                        colorScheme="brand"
+                        color="white"
+                        px={8}
+                        fontSize="lg"
+                        rightIcon={<HiOutlineArrowRight />}
+                        _hover={{
+                          transform: "translateY(-2px)",
+                          boxShadow: "0 10px 40px rgba(124, 58, 237, 0.4)",
+                        }}
+                      >
+                        Create Your Event
+                      </Button>
+                    </Link>
+                    <Link href="/login" prefetch={true}>
+                      <Button
+                        size="lg"
+                        variant="glass"
+                        px={8}
+                        fontSize="lg"
+                        color="whiteAlpha.800"
+                      >
+                        Sign In
+                      </Button>
+                    </Link>
                   </>
                 )}
               </HStack>
