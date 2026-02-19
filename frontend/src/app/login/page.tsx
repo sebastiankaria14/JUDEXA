@@ -37,7 +37,6 @@ import {
     HiOutlineSparkles,
     HiOutlineScale,
 } from "react-icons/hi2";
-import { createClient } from "@/lib/supabase/client";
 
 const MotionBox = motion.create(Box);
 const MotionFlex = motion.create(Flex);
@@ -59,7 +58,6 @@ function LoginPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
-    const supabase = createClient();
     const returnTo = searchParams.get("returnTo");
 
     const validate = () => {
@@ -78,42 +76,48 @@ function LoginPageContent() {
         setUnverified(false);
 
         try {
-            const { error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
+            const response = await fetch("http://localhost:8888/api/v1/auth/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
             });
 
-            if (error) {
-                if (error.message.toLowerCase().includes("email not confirmed")) {
+            const data = await response.json();
+
+            if (!response.ok) {
+                if (data.detail?.toLowerCase().includes("email not confirmed")) {
                     setUnverified(true);
                     return;
                 }
                 toast({
                     title: "Login failed",
-                    description: error.message,
+                    description: data.detail || "Invalid credentials",
                     status: "error",
                     duration: 5000,
                 });
                 return;
             }
 
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
-            const role = user?.user_metadata?.role;
+            // Store tokens in localStorage for later use
+            localStorage.setItem("access_token", data.access_token);
+            if (data.refresh_token) {
+                localStorage.setItem("refresh_token", data.refresh_token);
+            }
 
-            const redirectMap: Record<string, string> = {
-                organizer: "/dashboard",
-                judge: "/dashboard",
-                participant: "/dashboard",
-            };
-
-            router.push(returnTo || redirectMap[role || ""] || "/dashboard");
-        } catch {
             toast({
-                title: "Something went wrong",
-                status: "error",
+                title: "Welcome back!",
+                description: "Login successful",
+                status: "success",
                 duration: 3000,
+            });
+
+            router.push(returnTo || "/dashboard");
+        } catch (err) {
+            toast({
+                title: "Connection error",
+                description: "Unable to reach the server. Please try again.",
+                status: "error",
+                duration: 5000,
             });
         } finally {
             setLoading(false);

@@ -35,7 +35,6 @@ import {
     HiOutlineArrowPath,
     HiOutlinePresentationChartBar,
 } from "react-icons/hi2";
-import { createClient } from "@/lib/supabase/client";
 
 const MotionBox = motion.create(Box);
 const MotionFlex = motion.create(Flex);
@@ -74,7 +73,6 @@ function RegisterPageContent() {
     const router = useRouter();
     const searchParams = useSearchParams();
     const toast = useToast();
-    const supabase = createClient();
     const returnTo = searchParams.get("returnTo");
 
     const strength = useMemo(() => getPasswordStrength(password), [password]);
@@ -94,31 +92,38 @@ function RegisterPageContent() {
 
         setLoading(true);
         try {
-            const { error } = await supabase.auth.signUp({
-                email,
-                password,
-                options: {
-                    data: { name, role },
-                    emailRedirectTo: `${window.location.origin}/auth/callback`,
-                },
+            const response = await fetch("http://localhost:8888/api/v1/auth/signup", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, email, password, role }),
             });
 
-            if (error) {
+            const data = await response.json();
+
+            if (!response.ok) {
                 toast({
                     title: "Registration failed",
-                    description: error.message,
+                    description: data.detail || "Unable to create account",
                     status: "error",
                     duration: 5000,
                 });
                 return;
             }
 
-            router.push("/verify-email?email=" + encodeURIComponent(email));
-        } catch {
             toast({
-                title: "Something went wrong",
+                title: "Account created!",
+                description: data.message || "Please check your email to verify your account.",
+                status: "success",
+                duration: 5000,
+            });
+
+            router.push("/verify-email?email=" + encodeURIComponent(email));
+        } catch (err) {
+            toast({
+                title: "Connection error",
+                description: "Unable to reach the server. Please try again.",
                 status: "error",
-                duration: 3000,
+                duration: 5000,
             });
         } finally {
             setLoading(false);
