@@ -460,13 +460,14 @@ export default function Home() {
               <HStack spacing={4} pt={2}>
                 {user ? (
                   <Button
+                    as={Link}
+                    href="/dashboard"
                     size="lg"
                     colorScheme="brand"
                     color="white"
                     px={8}
                     fontSize="lg"
                     rightIcon={<HiOutlineArrowRight />}
-                    onClick={() => router.push("/dashboard")}
                     _hover={{
                       transform: "translateY(-2px)",
                       boxShadow: "0 10px 40px rgba(124, 58, 237, 0.4)",
@@ -476,33 +477,33 @@ export default function Home() {
                   </Button>
                 ) : (
                   <>
-                    <Link href="/register" prefetch={true}>
-                      <Button
-                        size="lg"
-                        colorScheme="brand"
-                        color="white"
-                        px={8}
-                        fontSize="lg"
-                        rightIcon={<HiOutlineArrowRight />}
-                        _hover={{
-                          transform: "translateY(-2px)",
-                          boxShadow: "0 10px 40px rgba(124, 58, 237, 0.4)",
-                        }}
-                      >
-                        Create Your Event
-                      </Button>
-                    </Link>
-                    <Link href="/login" prefetch={true}>
-                      <Button
-                        size="lg"
-                        variant="glass"
-                        px={8}
-                        fontSize="lg"
-                        color="whiteAlpha.800"
-                      >
-                        Sign In
-                      </Button>
-                    </Link>
+                    <Button
+                      as={Link}
+                      href="/register"
+                      size="lg"
+                      colorScheme="brand"
+                      color="white"
+                      px={8}
+                      fontSize="lg"
+                      rightIcon={<HiOutlineArrowRight />}
+                      _hover={{
+                        transform: "translateY(-2px)",
+                        boxShadow: "0 10px 40px rgba(124, 58, 237, 0.4)",
+                      }}
+                    >
+                      Create Your Event
+                    </Button>
+                    <Button
+                      as={Link}
+                      href="/login"
+                      size="lg"
+                      variant="glass"
+                      px={8}
+                      fontSize="lg"
+                      color="whiteAlpha.800"
+                    >
+                      Sign In
+                    </Button>
                   </>
                 )}
               </HStack>
@@ -759,6 +760,8 @@ export default function Home() {
                 Set up your event in minutes. Invite judges. Get results instantly.
               </Text>
               <Button
+                as={Link}
+                href={user ? "/dashboard" : "/register"}
                 size="lg"
                 bg="white"
                 color="brand.600"
@@ -766,7 +769,6 @@ export default function Home() {
                 fontSize="lg"
                 fontWeight="700"
                 rightIcon={<HiOutlineArrowRight />}
-                onClick={() => router.push(user ? "/dashboard" : "/register")}
                 position="relative"
                 _hover={{
                   transform: "translateY(-2px)",

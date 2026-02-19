@@ -21,6 +21,7 @@ import {
     DrawerCloseButton,
     VStack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { HiOutlineBars3, HiOutlineArrowRightOnRectangle } from "react-icons/hi2";
 import { useAuth } from "@/hooks/useAuth";
@@ -66,10 +67,11 @@ export function Navbar() {
                     justify="space-between"
                 >
                     <Text
+                        as={Link}
+                        href="/"
                         fontSize="xl"
                         fontWeight="800"
                         cursor="pointer"
-                        onClick={() => router.push("/")}
                         bgGradient="linear(to-r, white, brand.300)"
                         bgClip="text"
                     >
@@ -77,17 +79,19 @@ export function Navbar() {
                     </Text>
                     <HStack spacing={3}>
                         <Button
+                            as={Link}
+                            href="/login"
                             size="sm"
                             variant="ghost"
                             color="whiteAlpha.800"
-                            onClick={() => router.push("/login")}
                         >
                             Log In
                         </Button>
                         <Button
+                            as={Link}
+                            href="/register"
                             size="sm"
                             colorScheme="brand"
-                            onClick={() => router.push("/register")}
                         >
                             Sign Up
                         </Button>
@@ -117,10 +121,11 @@ export function Navbar() {
                 justify="space-between"
             >
                 <Text
+                    as={Link}
+                    href="/dashboard"
                     fontSize="xl"
                     fontWeight="800"
                     cursor="pointer"
-                    onClick={() => router.push("/dashboard")}
                     bgGradient="linear(to-r, white, brand.300)"
                     bgClip="text"
                 >
