@@ -2,6 +2,7 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   output: "standalone",
+  reactStrictMode: true,
   experimental: {
     optimizePackageImports: ["@chakra-ui/react", "framer-motion"],
     optimizeCss: true,
@@ -16,13 +17,6 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
-  },
-  reactStrictMode: true,
-  typescript: {
-    ignoreBuildErrors: false,
-  },
-  eslint: {
-    ignoreDuringBuilds: false,
   },
 };
 
